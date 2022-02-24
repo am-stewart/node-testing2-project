@@ -24,7 +24,7 @@ server.get("/projects", (req, res) => {
 server.get('/projects/:id', async (req, res) => {
   try {
     const project = await Projects.getById(req.params.id)
-    res.json(project)
+    res.status(200).json(project)
   } catch {
     console.log('err')
   }
