@@ -34,15 +34,19 @@ describe('[GET] /projects', () => {
 
 describe('[GET] /projects/:id', () => {
   it('should return a 200 OK status', async () => {
-
+    const res = await request(server).get('/projects/2')
+    expect(res.status).toBe(200)
   })
-  it('should return error message if ID does not exist', async () => {
-
+  it('should return a 404 status if ID does not exist', async () => {
+    const res = await request(server).get('/projects/7')
+    expect(res.status).toBe(404)
   })
   it('should return json', async () => {
-
+    const res = await request(server).get('/projects/1')
+    expect(res.type).toBe('application/json')
   })
   it('should return project id and name', async () => {
-    
+    const res = await request(server).get('/projects/3')
+    expect(res.body).toMatchObject({ id: 3, project_name: 'paint bedroom'})
   })
 })

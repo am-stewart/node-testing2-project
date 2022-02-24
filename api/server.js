@@ -1,5 +1,6 @@
 const express = require('express');
 const req = require('express/lib/request');
+const dbConfig = require('../data/db-config');
 
 const Projects = require('./projects/projects-model');
 
@@ -21,7 +22,15 @@ server.get("/projects", (req, res) => {
     });
 });
 
-server.get('/projects/:id', async (req, res) => {
+const checkId = async (req, res, next) => {
+  const project = await dbConfig('projects').where('id', req.params.id).first()
+  if(project) {
+    next()
+  } else {
+    res.status(404).json({ message: 'could not find project with that id' })
+  }
+}
+server.get('/projects/:id', checkId, async (req, res) => {
   try {
     const project = await Projects.getById(req.params.id)
     res.status(200).json(project)
