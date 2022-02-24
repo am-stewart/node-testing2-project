@@ -9,7 +9,7 @@ module.exports = {
   development: {
     ...common,
     connection: {
-      filename: './data/hobbits.db3',
+      filename: './data/projects.db3',
     },
   },
   testing: {
