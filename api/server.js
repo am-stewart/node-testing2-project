@@ -39,7 +39,15 @@ server.get('/projects/:id', checkId, async (req, res) => {
   }
 })
 
-server.post("/projects", async (req, res) => {
+const checkPayload = async (req, res, next) => {
+  if(!req.body.project_name || !req.body.project_name.trim()) {
+    res.status(422).end()
+  } else {
+    next()
+  }
+}
+
+server.post("/projects", checkPayload, async (req, res) => {
   res.status(201).json(await Projects.insert(req.body))
   .end()
 });

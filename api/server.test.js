@@ -50,3 +50,18 @@ describe('[GET] /projects/:id', () => {
     expect(res.body).toMatchObject({ id: 3, project_name: 'paint bedroom'})
   })
 })
+
+describe('[POST] /projects', () => {
+  it('should respond with a 201 created status', async () => {
+    const res = await request(server).post('/projects').send({ project_name: 'build patio'})
+    expect(res.status).toBe(201)
+  })
+  it('should respond with a 422 if project_name is missing', async () => {
+    const res = await request(server).post('/projects').send({ project_name: '    ' })
+    expect(res.status).toBe(422)
+  })
+  it('responds with the newly added project', async () => {
+    const res = await request(server).post('/projects').send({ project_name: 'power wash house'})
+    expect(res.body).toMatchObject({ id: 4, project_name: 'power wash house'})
+  })
+})
